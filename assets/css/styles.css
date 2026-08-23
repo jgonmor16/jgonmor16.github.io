@@ -159,13 +159,13 @@ button:focus-visible {
   border-bottom-color: var(--accent);
 }
 
-/* ---------- Buttons ---------- */
 .hero__actions {
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
 }
 
+/* ---------- Buttons ---------- */
 .btn {
   display: inline-block;
   font-family: var(--font-body);
@@ -198,4 +198,111 @@ button:focus-visible {
 
 .btn--ghost:hover {
   border-color: var(--text-primary);
+}
+
+/* ---------- Layout primitives ---------- */
+.section {
+  padding: 96px 24px;
+  max-width: var(--container);
+  margin: 0 auto;
+}
+
+.section__title {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(26px, 4vw, 34px);
+  letter-spacing: -0.01em;
+  margin: 0 0 16px;
+}
+
+.section__lead {
+  color: var(--text-secondary);
+  max-width: 520px;
+  margin: 0 0 48px;
+}
+
+/* ---------- Project cards ---------- */
+.projects {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 720px) {
+  .projects {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.project {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 28px 24px 24px;
+  border: 1px solid #1C2333;
+  border-radius: var(--radius);
+  background: #0D1220;
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.project:hover {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+}
+
+.project__index {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--accent);
+  margin: 0 0 10px;
+}
+
+.project__name {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 19px;
+  margin: 0 0 10px;
+}
+
+.project__desc {
+  color: var(--text-secondary);
+  font-size: 15px;
+  margin: 0 0 20px;
+  flex-grow: 1;
+}
+
+.project__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  list-style: none;
+  margin: 0 0 20px;
+  padding: 0;
+}
+
+.project__tags li {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-muted);
+  border: 1px solid #1C2333;
+  border-radius: 3px;
+  padding: 3px 8px;
+}
+
+.project__links {
+  display: flex;
+  gap: 18px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+}
+
+.project__links a {
+  color: var(--text-primary);
+  text-decoration: none;
+  border-bottom: 1px solid var(--text-muted);
+  transition: border-color 0.15s ease;
+}
+
+.project__links a:hover {
+  border-bottom-color: var(--accent);
 }
