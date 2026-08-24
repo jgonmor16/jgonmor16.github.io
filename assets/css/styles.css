@@ -310,6 +310,47 @@ button:focus-visible {
   border-bottom-color: var(--accent);
 }
 
+/* ---------- Technical knowledge ---------- */
+.knowledge {
+  display: grid;
+  gap: 28px;
+  grid-template-columns: 1fr;
+  margin: 0;
+  padding: 0;
+}
+
+@media (min-width: 720px) {
+  .knowledge {
+    grid-template-columns: 1fr 1fr;
+    gap: 32px 40px;
+  }
+}
+
+.knowledge__group {
+  border-top: 1px solid #1C2333;
+  padding-top: 14px;
+}
+
+.knowledge__domain {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--accent);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin: 0 0 8px;
+}
+
+.knowledge__items {
+  margin: 0 0 6px;
+  font-size: 15px;
+}
+
+.knowledge__note {
+  margin: 0;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
 /* ---------- Contact ---------- */
 .contact {
   list-style: none;
