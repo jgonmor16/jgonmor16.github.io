@@ -6,15 +6,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <title>Javier González — Project Manager &amp; Systems Engineer</title>
-  <meta name="description" content="Portfolio of Javier González: PMP-certified
-    project manager and systems engineer with an FPGA and embedded background,
-    still hands-on in Open Source Projects (various programming languages).">
-
-  <meta property="og:title" content="Javier González — Project Manager &amp;
-    Systems Engineer">
-  <meta property="og:description" content="PMP-certified project manager and
-    systems engineer with an FPGA and embedded background. Still hands-on: Open
-    Source Projects (various programming languages).">
+  <meta name="description"
+        content="Portfolio of Javier González: PMP-certified project manager and systems engineer with an FPGA and embedded background, still hands-on in Open Source Projects (various programming languages).">
+  <meta property="og:title"
+        content="Javier González — Project Manager &amp; Systems Engineer">
+  <meta property="og:description"
+        content="PMP-certified project manager and systems engineer with an FPGA and embedded background. Still hands-on: Open Source Projects (various programming languages).">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://jgonmor16.github.io/">
   <meta name="theme-color" content="#0A0E1A">
@@ -52,7 +49,8 @@
 
         <div class="hero__actions">
           <a class="btn btn--primary" href="#projects">View projects</a>
-          <a class="btn btn--ghost" href="https://www.linkedin.com/in/jgonzalezmoreno/" target="_blank"
+          <a class="btn btn--ghost"
+            href="https://www.linkedin.com/in/jgonzalezmoreno/" target="_blank"
             rel="noopener">LinkedIn</a>
         </div>
 
@@ -61,12 +59,96 @@
             <a href="mailto:jgonmor16@gmail.com">jgonmor16@gmail.com</a>
           </li>
           <li>
-            <a href="https://github.com/jgonmor16" target="_blank" rel="noopener">github.com/jgonmor16</a>
+            <a href="https://github.com/jgonmor16"
+              target="_blank" rel="noopener">github.com/jgonmor16</a>
           </li>
         </ul>
       </div>
     </section>
 
+    <section class="section" id="projects" aria-labelledby="projects-title">
+      <p class="eyebrow">Selected work</p>
+      <div class="ignite-bar" aria-hidden="true"></div>
+      <h2 class="section__title" id="projects-title">Projects</h2>
+      <p class="section__lead">
+        Projects I have built outside of work &mdash; where the software
+        engineering habits meet whatever I felt like learning that month.
+      </p>
+
+      <ul class="projects">
+
+        <!-- Frame Extractor -->
+        <li class="project">
+          <p class="project__index">01</p>
+          <h3 class="project__name">Frame Extractor</h3>
+          <p class="project__desc">
+            Extract video frames as PNG or JPEG, from the command line or as a
+            Python library. Built on ffmpeg, it turns the cases where ffmpeg
+            quietly returns a wrong answer into clear errors. Published to PyPI
+            automatically on each release.
+          </p>
+          <ul class="project__tags">
+            <li>Python</li>
+            <li>CLI</li>
+            <li>ffmpeg</li>
+            <li>PyPI</li>
+          </ul>
+          <div class="project__links">
+            <a href="https://github.com/jgonmor16/frame-extractor"
+              target="_blank" rel="noopener">Source</a>
+            <a href="https://pypi.org/project/frame-extractor-ffmpeg/"
+              target="_blank" rel="noopener">PyPI</a>
+          </div>
+        </li>
+
+        <!-- Open Source Contributions -->
+        <li class="project">
+          <p class="project__index">02</p>
+          <h3 class="project__name">Neovim HDL tooling Contributions</h3>
+          <p class="project__desc">
+            Three merged pull requests on the editor tooling for hardware
+            description languages. Added the VHDL indent query tree-sitter-vhdl
+            was missing, and fixed project-root detection for the vhdl_ls and
+            verible language servers.
+          </p>
+          <ul class="project__tags">
+            <li>VHDL</li>
+            <li>Tree-sitter</li>
+            <li>Lua</li>
+            <li>Neovim</li>
+          </ul>
+          <div class="project__links">
+            <a href="https://github.com/jpt13653903/tree-sitter-vhdl/pull/75"
+              target="_blank" rel="noopener">Indent query</a>
+            <a href="https://github.com/neovim/nvim-lspconfig/pull/4506"
+              target="_blank" rel="noopener">vhdl_ls fix</a>
+            <a href="https://github.com/neovim/nvim-lspconfig/pull/4498"
+              target="_blank" rel="noopener">verible fix</a>
+          </div>
+        </li>
+
+        <!-- FVM Website -->
+        <li class="project">
+          <p class="project__index">03</p>
+          <h3 class="project__name">FVM Landing Website</h3>
+          <p class="project__desc">
+            A ground-up modernisation of the landing page for FVM, an ESA-funded
+            formal verification methodology from the Universidad de Sevilla.
+            Rebuilt around design tokens, self-hosted fonts, dark mode and a
+            responsive layout. Vanilla HTML, CSS and JavaScript.
+          </p>
+          <ul class="project__tags">
+            <li>HTML</li>
+            <li>CSS</li>
+            <li>JavaScript</li>
+          </ul>
+          <div class="project__links">
+            <a href="https://fvm.us.es/"
+              target="_blank" rel="noopener">Live site</a>
+          </div>
+        </li>
+      </ul>
+    </section>
   </main>
 
 </body>
