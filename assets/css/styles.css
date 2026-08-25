@@ -351,6 +351,84 @@ button:focus-visible {
   color: var(--text-muted);
 }
 
+/* ---------- Background ---------- */
+.background__text {
+  color: var(--text-secondary);
+  max-width: 560px;
+  margin: 0 0 40px;
+}
+
+.arc {
+  display: flex;
+  flex-wrap: wrap;
+  list-style: none;
+  margin: 0 0 32px;
+  padding: 0;
+}
+
+.arc__step {
+  position: relative;
+  flex: 1 1 120px;
+  padding-top: 16px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-muted);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* The rail runs behind each step; the last one stops halfway
+   so the line ends at the current role rather than running on. */
+.arc__step::before {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: #1C2333;
+}
+
+.arc__step:last-child::before {
+  right: 50%;
+}
+
+.arc__step::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--text-muted);
+}
+
+.arc__step--current {
+  color: var(--accent);
+}
+
+.arc__step--current::after {
+  background: var(--accent);
+}
+
+.background__more {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 13px;
+}
+
+.background__more a {
+  color: var(--text-primary);
+  text-decoration: none;
+  border-bottom: 1px solid var(--text-muted);
+  transition: border-color 0.15s ease;
+}
+
+.background__more a:hover {
+  border-bottom-color: var(--accent);
+}
+
 /* ---------- Contact ---------- */
 .contact {
   list-style: none;
