@@ -201,8 +201,12 @@ button:focus-visible {
 }
 
 /* ---------- Layout primitives ---------- */
+.section+.section {
+  border-top: 1px solid #1C2333;
+}
+
 .section {
-  padding: 96px 24px;
+  padding: clamp(36px, 4vw, 52px) 24px clamp(44px, 5vw, 64px);
   max-width: var(--container);
   margin: 0 auto;
 }
@@ -255,9 +259,10 @@ button:focus-visible {
 
 .project__index {
   font-family: var(--font-mono);
-  font-size: 12px;
+  font-size: 15px;
+  font-weight: 500;
   color: var(--accent);
-  margin: 0 0 10px;
+  margin: 0 0 12px;
 }
 
 .project__name {
@@ -294,14 +299,16 @@ button:focus-visible {
 
 .project__links {
   display: flex;
+  flex-wrap: wrap;
   gap: 18px;
   font-family: var(--font-mono);
-  font-size: 13px;
+  font-size: 11px;
 }
 
 .project__links a {
   color: var(--text-primary);
   text-decoration: none;
+  white-space: nowrap;
   border-bottom: 1px solid var(--text-muted);
   transition: border-color 0.15s ease;
 }
