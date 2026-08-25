@@ -201,8 +201,12 @@ button:focus-visible {
 }
 
 /* ---------- Layout primitives ---------- */
+.section+.section {
+  border-top: 1px solid #1C2333;
+}
+
 .section {
-  padding: 96px 24px;
+  padding: clamp(36px, 4vw, 52px) 24px clamp(44px, 5vw, 64px);
   max-width: var(--container);
   margin: 0 auto;
 }
@@ -255,9 +259,10 @@ button:focus-visible {
 
 .project__index {
   font-family: var(--font-mono);
-  font-size: 12px;
+  font-size: 15px;
+  font-weight: 500;
   color: var(--accent);
-  margin: 0 0 10px;
+  margin: 0 0 12px;
 }
 
 .project__name {
@@ -294,18 +299,201 @@ button:focus-visible {
 
 .project__links {
   display: flex;
+  flex-wrap: wrap;
   gap: 18px;
   font-family: var(--font-mono);
-  font-size: 13px;
+  font-size: 11px;
 }
 
 .project__links a {
   color: var(--text-primary);
   text-decoration: none;
+  white-space: nowrap;
   border-bottom: 1px solid var(--text-muted);
   transition: border-color 0.15s ease;
 }
 
 .project__links a:hover {
   border-bottom-color: var(--accent);
+}
+
+/* ---------- Technical knowledge ---------- */
+.knowledge {
+  display: grid;
+  gap: 28px;
+  grid-template-columns: 1fr;
+  margin: 0;
+  padding: 0;
+}
+
+@media (min-width: 720px) {
+  .knowledge {
+    grid-template-columns: 1fr 1fr;
+    gap: 32px 40px;
+  }
+}
+
+.knowledge__group {
+  border-top: 1px solid #1C2333;
+  padding-top: 14px;
+}
+
+.knowledge__domain {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--accent);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin: 0 0 8px;
+}
+
+.knowledge__items {
+  margin: 0 0 6px;
+  font-size: 15px;
+}
+
+.knowledge__note {
+  margin: 0;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+/* ---------- Background ---------- */
+.background__text {
+  color: var(--text-secondary);
+  max-width: 560px;
+  margin: 0 0 40px;
+}
+
+.arc {
+  display: flex;
+  flex-wrap: wrap;
+  list-style: none;
+  margin: 0 0 32px;
+  padding: 0;
+}
+
+.arc__step {
+  position: relative;
+  flex: 1 1 120px;
+  padding-top: 16px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-muted);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* The rail runs behind each step; the last one stops halfway
+   so the line ends at the current role rather than running on. */
+.arc__step::before {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: #1C2333;
+}
+
+.arc__step:last-child::before {
+  right: 50%;
+}
+
+.arc__step::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--text-muted);
+}
+
+.arc__step--current {
+  color: var(--accent);
+}
+
+.arc__step--current::after {
+  background: var(--accent);
+}
+
+.background__more {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 13px;
+}
+
+.background__more a {
+  color: var(--text-primary);
+  text-decoration: none;
+  border-bottom: 1px solid var(--text-muted);
+  transition: border-color 0.15s ease;
+}
+
+.background__more a:hover {
+  border-bottom-color: var(--accent);
+}
+
+/* ---------- Contact ---------- */
+.contact {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid #1C2333;
+}
+
+.contact a {
+  display: flex;
+  align-items: baseline;
+  gap: 8px 16px;
+  padding: 16px 0;
+  border-bottom: 1px solid #1C2333;
+  text-decoration: none;
+  color: var(--text-primary);
+  transition: border-color 0.2s ease;
+}
+
+.contact a:hover {
+  border-bottom-color: var(--accent);
+}
+
+.contact__label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-muted);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  flex: 0 0 78px;
+}
+
+.contact__value {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(16px, 2.2vw, 19px);
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  transition: color 0.2s ease;
+}
+
+.contact__arrow {
+  color: var(--accent);
+  flex: 0 0 auto;
+  transition: transform 0.2s ease;
+}
+
+.contact a:hover .contact__value {
+  color: var(--accent-2);
+}
+
+.contact a:hover .contact__arrow {
+  transform: translate(2px, -2px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .contact__arrow {
+    transition: none;
+  }
 }
