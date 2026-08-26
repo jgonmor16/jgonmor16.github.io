@@ -92,39 +92,55 @@ button:focus-visible {
   color: var(--text-muted);
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  margin: 0 0 18px;
+  width: fit-content;
+  margin: 0 0 20px;
 }
 
-.ignite-bar {
-  width: 64px;
+.eyebrow::after {
+  content: "";
+  display: block;
+  height: 4px;
+  margin-top: 10px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  transform-origin: left center;
+}
+
+.hero .eyebrow::after {
+  display: none;
+}
+
+.hero__mark {
+  position: relative;
+}
+
+.hero__mark::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -0.16em;
   height: 4px;
   border-radius: 2px;
   background: linear-gradient(90deg, var(--accent), var(--accent-2));
-  margin: 0 0 22px;
-}
-
-.hero .ignite-bar {
+  transform-origin: left center;
   animation: ignite 1s ease-out;
-}
-
-.js .reveal.is-visible .ignite-bar {
-  animation: ignite 0.9s ease-out;
 }
 
 @keyframes ignite {
   from {
-    width: 0;
+    transform: scaleX(0);
     opacity: 0.3;
   }
 
   to {
-    width: 64px;
+    transform: scaleX(1);
     opacity: 1;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .ignite-bar {
+  .hero__mark::after {
     animation: none;
   }
 
@@ -210,6 +226,20 @@ button:focus-visible {
   .term__dot {
     animation: pulse 2.4s cubic-bezier(.2, .7, .3, 1) infinite;
   }
+
+  /* The bar draws itself just after its label arrives. */
+  .js .reveal .eyebrow::after {
+    transform: scaleX(0);
+    opacity: 0.3;
+    transition: transform 0.6s cubic-bezier(.2, .7, .3, 1),
+      opacity 0.6s cubic-bezier(.2, .7, .3, 1);
+    transition-delay: 160ms;
+  }
+
+  .js .reveal.is-visible .eyebrow::after {
+    transform: scaleX(1);
+    opacity: 1;
+  }
 }
 
 @keyframes pulse {
@@ -228,7 +258,7 @@ button:focus-visible {
 /* scroll-padding stops an anchored section landing
    underneath the sticky bar. */
 html {
-  scroll-padding-top: calc(var(--nav-h) + 12px);
+  scroll-padding-top: calc(var(--nav-h) - 1px);
 }
 
 .nav {
@@ -319,6 +349,7 @@ html {
   display: flex;
   align-items: center;
   padding: 96px 24px;
+  border-bottom: 1px solid var(--line);
 }
 
 .hero__inner {
@@ -333,7 +364,7 @@ html {
   font-size: clamp(36px, 7vw, 56px);
   letter-spacing: -0.02em;
   line-height: 1.05;
-  margin: 0 0 20px;
+  margin: 0 0 28px;
 }
 
 .hero__position {
@@ -626,6 +657,34 @@ html {
   background: var(--accent);
 }
 
+.arc:hover .arc__step--current:not(:hover),
+.arc:focus-within .arc__step--current:not(:focus-within) {
+  color: var(--text-muted);
+}
+
+.arc:hover .arc__step--current:not(:hover)::after,
+.arc:focus-within .arc__step--current:not(:focus-within)::after {
+  background: var(--text-muted);
+}
+
+.arc__step {
+  transition: color 0.2s ease;
+}
+
+.arc__step::after {
+  transition: background 0.2s ease;
+}
+
+.arc__step:hover,
+.arc__step:focus-within {
+  color: var(--accent);
+}
+
+.arc__step:hover::after,
+.arc__step:focus-within::after {
+  background: var(--accent);
+}
+
 .background__more {
   margin: 0;
   font-family: var(--font-mono);
@@ -653,7 +712,7 @@ html {
 
 .contact a {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   gap: 8px 16px;
   padding: 16px 0;
   border-bottom: 1px solid var(--line);
@@ -689,6 +748,33 @@ html {
   color: var(--accent);
   flex: 0 0 auto;
   transition: transform 0.2s ease;
+}
+
+.contact__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  color: var(--text-muted);
+  width: 18px;
+  height: 18px;
+}
+
+.contact__icon svg,
+.contact__icon img {
+  display: block;
+  width: 16px;
+  height: 16px;
+}
+
+.contact__icon img {
+  opacity: 0.72;
+}
+
+.foot__links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
 }
 
 .contact a:hover .contact__value {
@@ -756,7 +842,8 @@ html {
 .foot__colophon {
   margin: 0;
   max-width: 46ch;
-  font-size: 13px;
+  font-size: 12px;
+  line-height: 1.55;
   color: var(--text-faint);
 }
 

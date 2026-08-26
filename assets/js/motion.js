@@ -10,13 +10,14 @@
   document.documentElement.classList.add('js');
   for (const block of blocks) block.classList.add('reveal');
 
-  const observer = new IntersectionObserver((entries, obs) => {
+  const nav = document.querySelector('.nav');
+  const navH = nav ? nav.offsetHeight : 0;
+
+  const observer = new IntersectionObserver((entries) => {
     for (const entry of entries) {
-      if (!entry.isIntersecting) continue;
-      entry.target.classList.add('is-visible');
-      obs.unobserve(entry.target);
+      entry.target.classList.toggle('is-visible', entry.isIntersecting);
     }
-  }, { rootMargin: '0px 0px -10% 0px' });
+  }, { rootMargin: `-${navH + 20}px 0px -10% 0px` });
 
   for (const block of blocks) observer.observe(block);
 })();

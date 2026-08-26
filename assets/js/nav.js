@@ -11,7 +11,7 @@
   const nav = document.querySelector('.nav');
 
   const update = () => {
-    const line = nav.offsetHeight + 8;
+    const line = nav.offsetHeight + 20;
     let current = null;
     for (const item of items) {
       const box = item.section.getBoundingClientRect();
