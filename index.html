@@ -171,6 +171,27 @@
           </div>
         </li>
       </ul>
+
+      <figure class="term" aria-label="ffmpeg silent failure versus
+        frame-extractor">
+        <figcaption class="term__bar">
+          <span class="term__label">frame-extractor</span>
+          <span class="term__note">the case the card is about</span>
+        </figcaption>
+        <pre class="term__code"><code><span class="tok-c"># ffmpeg: start time past the end of a 2.3s clip</span>
+<span class="tok-p">$</span> ffmpeg <span class="tok-k">-ss</span> <span class="tok-n">9999</span> <span class="tok-k">-i</span> clip.mp4 <span class="tok-k">-frames:v</span> <span class="tok-n">1</span> out.png
+<span class="tok-c"># exits 0. writes nothing. no error.</span>
+
+<span class="tok-c"># same request, rejected</span>
+<span class="tok-p">$</span> frame-extractor clip.mp4 <span class="tok-k">--start</span> <span class="tok-n">9999.0</span>
+<span class="tok-e">error:</span> --start (9999.0s) is at or past the end of the video (2.300s) ...</code></pre>
+        <figcaption class="term__verdict">
+          <span class="term__dot" aria-hidden="true"></span>
+          EXIT 2
+          <span class="term__meta">fails loudly, on purpose</span>
+        </figcaption>
+      </figure>
+
     </section>
 
     <section class="section" id="knowledge" aria-labelledby="knowledge-title">
