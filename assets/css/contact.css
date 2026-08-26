@@ -1,0 +1,55 @@
+/* ---------- Contact ---------- */
+.contact {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--line);
+}
+
+.contact a {
+  display: flex;
+  align-items: center;
+  gap: 8px 16px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--line);
+  text-decoration: none;
+  color: var(--text-primary);
+  transition: border-color 0.2s ease;
+}
+
+.contact a:hover {
+  border-bottom-color: var(--accent);
+}
+
+.contact__label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-muted);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  flex: 0 0 78px;
+}
+
+.contact__value {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(16px, 2.2vw, 19px);
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  transition: color 0.2s ease;
+}
+
+.contact__arrow {
+  color: var(--accent);
+  flex: 0 0 auto;
+  transition: transform 0.2s ease;
+}
+
+.contact a:hover .contact__value {
+  color: var(--accent-2);
+}
+
+.contact a:hover .contact__arrow {
+  transform: translate(2px, -2px);
+}
