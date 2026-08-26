@@ -1,11 +1,29 @@
 /* ---------- Design tokens ---------- */
 :root {
   --bg: #0A0E1A;
+  --surface: #0D1220;
+  --surface-2: #121A2B;
+  --line: #1C2333;
+  --line-strong: #2A3654;
+
   --text-primary: #F5F7FA;
   --text-secondary: #9AA5B1;
-  --text-muted: #5B6B7D;
+  --text-muted: #7488A0;
+  --text-faint: #7488A0;
+
   --accent: #FF4E33;
   --accent-2: #FF8C42;
+
+  --signal: #3DD68C;
+  --info: #8B7BFF;
+
+  /* Syntax, for code panels. */
+  --tok-kw: #FF8C42;
+  --tok-str: #3DD68C;
+  --tok-fn: #8B7BFF;
+  --tok-num: #4FD1C5;
+  --tok-comment: #5B6B7D;
+  --tok-err: #FF4E33;
 
   --font-display: 'Sora', sans-serif;
   --font-body: 'Inter', sans-serif;
@@ -13,6 +31,7 @@
 
   --radius: 6px;
   --container: 760px;
+  --section-gap: clamp(44px, 5vw, 64px);
 }
 
 /* ---------- Reset ---------- */
@@ -202,11 +221,11 @@ button:focus-visible {
 
 /* ---------- Layout primitives ---------- */
 .section+.section {
-  border-top: 1px solid #1C2333;
+  border-top: 1px solid var(--line);
 }
 
 .section {
-  padding: clamp(36px, 4vw, 52px) 24px clamp(44px, 5vw, 64px);
+  padding: clamp(36px, 4vw, 52px) 24px var(--section-gap);
   max-width: var(--container);
   margin: 0 auto;
 }
@@ -246,9 +265,9 @@ button:focus-visible {
   display: flex;
   flex-direction: column;
   padding: 28px 24px 24px;
-  border: 1px solid #1C2333;
+  border: 1px solid var(--line);
   border-radius: var(--radius);
-  background: #0D1220;
+  background: var(--surface);
   transition: border-color 0.2s ease, transform 0.2s ease;
 }
 
@@ -292,7 +311,7 @@ button:focus-visible {
   font-family: var(--font-mono);
   font-size: 11px;
   color: var(--text-muted);
-  border: 1px solid #1C2333;
+  border: 1px solid var(--line);
   border-radius: 3px;
   padding: 3px 8px;
 }
@@ -334,7 +353,7 @@ button:focus-visible {
 }
 
 .knowledge__group {
-  border-top: 1px solid #1C2333;
+  border-top: 1px solid var(--line);
   padding-top: 14px;
 }
 
@@ -393,7 +412,7 @@ button:focus-visible {
   left: 0;
   right: 0;
   height: 1px;
-  background: #1C2333;
+  background: var(--line);
 }
 
 .arc__step:last-child::before {
@@ -441,7 +460,7 @@ button:focus-visible {
   list-style: none;
   margin: 0;
   padding: 0;
-  border-top: 1px solid #1C2333;
+  border-top: 1px solid var(--line);
 }
 
 .contact a {
@@ -449,7 +468,7 @@ button:focus-visible {
   align-items: baseline;
   gap: 8px 16px;
   padding: 16px 0;
-  border-bottom: 1px solid #1C2333;
+  border-bottom: 1px solid var(--line);
   text-decoration: none;
   color: var(--text-primary);
   transition: border-color 0.2s ease;
