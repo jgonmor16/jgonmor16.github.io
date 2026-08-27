@@ -127,7 +127,7 @@
           </ul>
           <div class="project__links">
             <a href="https://github.com/jgonmor16/frame-extractor"
-              target="_blank" rel="noopener">Source</a>
+              target="_blank" rel="noopener">Source Code</a>
             <a href="https://pypi.org/project/frame-extractor-ffmpeg/"
               target="_blank" rel="noopener">PyPI</a>
           </div>
@@ -136,12 +136,17 @@
         <!-- Open Source Contributions -->
         <li class="project">
           <p class="project__index">02</p>
-          <h3 class="project__name">Neovim HDL tooling Contributions</h3>
+          <span class="project__go" aria-hidden="true">&#8594;</span>
+          <h3 class="project__name">
+            <a href="projects/hdl-tooling/">HDL tooling for Neovim</a>
+          </h3>
           <p class="project__desc">
             Three merged pull requests on the editor tooling for hardware
-            description languages. Added the VHDL indent query tree-sitter-vhdl
-            was missing, and fixed project-root detection for the vhdl_ls and
-            verible language servers.
+            description languages. VHDL had no indent query in Neovim, so every
+            buffer fell back to a Vimscript file written for the 1993 standard.
+            Wrote the query, anchored so the indent cannot compound, with
+            thirteen reference files testing it as a no-op. Two language-server
+            root fixes merged alongside it.
           </p>
           <ul class="project__tags">
             <li>VHDL</li>
@@ -229,7 +234,7 @@
             C, C++, Python, Lua, HTML, CSS, JavaScript, Bash
           </dd>
           <dd class="knowledge__note">
-            A CLI library on PyPI, Neovim tooling, web design
+            A CLI library on PyPI, Neovim tooling, web design.
           </dd>
         </div>
 
