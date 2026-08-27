@@ -1,0 +1,88 @@
+/* ---------- Nav ---------- */
+/* scroll-padding stops an anchored section landing
+   underneath the sticky bar. */
+html {
+  scroll-padding-top: calc(var(--nav-h) - 1px);
+}
+
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: color-mix(in srgb, var(--bg) 86%, transparent);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line);
+}
+
+.nav__inner {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  min-height: var(--nav-h);
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.nav__mark {
+  display: flex;
+  align-items: center;
+  flex: 0 0 auto;
+}
+
+.nav__mark img {
+  display: block;
+}
+
+.nav__list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 2px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.nav__list a {
+  display: block;
+  position: relative;
+  padding: 6px 10px;
+  border-radius: 4px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color 0.15s ease, background 0.15s ease;
+}
+
+.nav__list a:hover {
+  color: var(--text-primary);
+  background: var(--surface);
+}
+
+.nav__list a[aria-current="true"] {
+  color: var(--text-primary);
+}
+
+.nav__list a[aria-current="true"]::after {
+  content: "";
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  bottom: 0;
+  height: 2px;
+  border-radius: 1px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+}
+
+@media (max-width: 460px) {
+  .nav__mark {
+    display: none;
+  }
+
+  .nav__list a {
+    padding: 6px 7px;
+    font-size: 12px;
+  }
+}
