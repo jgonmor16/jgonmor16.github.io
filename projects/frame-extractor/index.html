@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Frame Extractor — Javier González</title>
+  <meta name="description"
+    content="Frame Extractor: a CLI and Python library for pulling frames out of video, built to reject the requests ffmpeg accepts and silently gets wrong.">
+
+  <meta property="og:title" content="Frame Extractor — Javier González">
+  <meta property="og:description"
+    content="A CLI and Python library for pulling frames out of video, built to reject the requests ffmpeg accepts and silently gets wrong.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://jgonmor16.github.io/projects/frame-extractor/">
+  <meta property="og:image" content="https://jgonmor16.github.io/assets/img/og-image.png">
+  <meta name="theme-color" content="#0A0E1A">
+
+  <link rel="icon" href="/assets/img/favicon.ico" sizes="32x32">
+  <link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/assets/img//apple-touch-icon.png">
+
+  <link rel="stylesheet" href="/assets/css/fonts.css">
+  <link rel="stylesheet" href="/assets/css/tokens.css">
+  <link rel="stylesheet" href="/assets/css/base.css">
+  <link rel="stylesheet" href="/assets/css/nav.css">
+  <link rel="stylesheet" href="/assets/css/projects.css">
+  <link rel="stylesheet" href="/assets/css/knowledge.css">
+  <link rel="stylesheet" href="/assets/css/footer.css">
+  <link rel="stylesheet" href="/assets/css/detail.css">
+  <link rel="stylesheet" href="/assets/css/motion.css">
+</head>
+
+<body>
+
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <nav class="nav" aria-label="Main">
+    <div class="nav__inner">
+      <a class="nav__mark" href="/" aria-label="Home">
+        <img src="/assets/img/logo.svg" alt="" width="29" height="26">
+      </a>
+      <ul class="nav__list">
+        <li><a href="/#projects">&larr; All projects</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main id="main">
+
+    <header class="section detail__head">
+      <p class="eyebrow">Project 01 &middot; Python</p>
+      <h1 class="detail__title">Frame Extractor</h1>
+      <p class="detail__lead">
+        Extract frames from a video as PNG or JPEG, from the command
+        line or from Python. Built on ffmpeg, and written because
+        ffmpeg accepts several requests it cannot satisfy and reports
+        success anyway.
+      </p>
+
+      <ul class="project__tags detail__tags">
+        <li>Python</li>
+        <li>CLI</li>
+        <li>ffmpeg</li>
+        <li>PyPI</li>
+        <li>MIT</li>
+      </ul>
+
+      <div class="project__links detail__links">
+        <a href="https://github.com/jgonmor16/frame-extractor" target="_blank" rel="noopener">Source</a>
+        <a href="https://pypi.org/project/frame-extractor-ffmpeg/" target="_blank" rel="noopener">PyPI</a>
+        <a href="https://github.com/jgonmor16/frame-extractor/blob/main/docs/DESIGN.md" target="_blank"
+          rel="noopener">Design notes</a>
+      </div>
+    </header>
+
+    <section class="section" aria-labelledby="problem-title">
+      <p class="eyebrow">Problem</p>
+      <h2 class="section__title" id="problem-title">
+        Exit zero, wrong answer
+      </h2>
+      <p class="detail__text">
+        For a one-off extraction by someone who knows ffmpeg, a wrapper
+        adds very little. The whole job is one command. What it does
+        add is a guard against the cases where ffmpeg exits zero and
+        produces output that looks reasonable.
+      </p>
+
+      <div class="dtable-scroll">
+        <table class="dtable">
+          <thead>
+            <tr>
+              <th scope="col">What you ask for</th>
+              <th scope="col">ffmpeg</th>
+              <th scope="col">frame-extractor</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>--start 99</code> on a 2-second video</td>
+              <td>writes nothing, exits 0</td>
+              <td class="dtable__ok">rejected, exit 1</td>
+            </tr>
+            <tr>
+              <td><code>--jpeg-quality 100</code>, valid range 2&ndash;31</td>
+              <td>clamps to 31 silently</td>
+              <td class="dtable__ok">rejected, exit 1</td>
+            </tr>
+            <tr>
+              <td>re-extracting a shorter range</td>
+              <td>leaves the previous run's surplus frames alongside
+                the new ones</td>
+              <td class="dtable__ok">refused unless
+                <code>--overwrite</code>
+              </td>
+            </tr>
+            <tr>
+              <td><code>--scale -1:-1</code></td>
+              <td>resizes nothing</td>
+              <td class="dtable__ok">rejected, exit 1</td>
+            </tr>
+            <tr>
+              <td><code>--fps 20</code> on a 10fps source</td>
+              <td>40 files, every second one a duplicate</td>
+              <td class="dtable__ok">rejected, exit 1</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p class="detail__text">
+        The third row is the one that bites. Frames from two runs end
+        up in one directory with nothing marking which is which, and
+        the count you get back is wrong rather than merely untidy.
+      </p>
+    </section>
+
+    <section class="section" aria-labelledby="approach-title">
+      <p class="eyebrow">Approach</p>
+      <h2 class="section__title" id="approach-title">
+        Refuse before running, not after
+      </h2>
+      <p class="detail__text">
+        Every one of those cases is knowable before ffmpeg starts. The
+        source is probed first, the request is checked against what the
+        file can actually provide, and anything impossible is rejected
+        with a single <code>error:</code> line on stderr and a non-zero
+        exit. No tracebacks.
+      </p>
+
+      <!-- The preformatted lines below exceed 80 columns on
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       purpose: whitespace is significant there, so wrapping
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  the source would add real breaks to the output. -->
+      <figure class="term">
+        <figcaption class="term__bar">
+          <span class="term__label">the first row, run</span>
+        </figcaption>
+        <pre class="term__code"><code><span class="tok-c"># ffmpeg: start past the end of a 2-second clip</span>
+<span class="tok-p">$</span> ffmpeg <span class="tok-k">-ss</span> <span class="tok-n">99</span> <span class="tok-k">-i</span> in.mp4 <span class="tok-k">-vsync</span> <span class="tok-n">0</span>frames/f_%06d.png
+<span class="tok-p">$</span> <span class="tok-k">echo</span> $?
+<span class="tok-n">0</span> <span class="tok-c"># and frames/ is empty</span>
+
+<span class="tok-p">$</span> frame-extractor in.mp4 frames/ <span class="tok-k">--start</span> <span class="tok-n">99</span>
+<span class="tok-e">error:</span> --start (99.0s) is at or past the end of the video (2.000s)</code></pre>
+        <figcaption class="term__verdict">
+          <span class="term__dot" aria-hidden="true"></span>
+          EXIT 1
+          <span class="term__meta">rejected, as intended</span>
+        </figcaption>
+      </figure>
+
+      <p class="detail__text">
+        The same checks back the Python API, which raises
+        <code>FrameExtractorError</code> subclasses rather than
+        printing &mdash; the library never writes to stdout, so what to
+        do with a failure stays with the caller.
+      </p>
+    </section>
+
+    <section class="section" aria-labelledby="evidence-title">
+      <p class="eyebrow">Evidence</p>
+      <h2 class="section__title" id="evidence-title">
+        What is actually verified
+      </h2>
+
+      <dl class="knowledge detail__facts">
+        <div class="knowledge__group">
+          <dt class="knowledge__domain">Tested</dt>
+          <dd class="knowledge__items">Python 3.10 through 3.14</dd>
+          <dd class="knowledge__note">
+            <a href="https://github.com/jgonmor16/frame-extractor/actions/workflows/tests.yml"
+              target="_blank" rel="noopener">CI</a> runs the full
+            matrix on every pull request. The suite generates its own
+            clip with ffmpeg's testsrc, so no fixture video is
+            committed.
+          </dd>
+        </div>
+        <div class="knowledge__group">
+          <dt class="knowledge__domain">Dependencies</dt>
+          <dd class="knowledge__items">None beyond ffmpeg itself</dd>
+          <dd class="knowledge__note">
+            No third-party Python packages &mdash; see
+            <a href="https://github.com/jgonmor16/frame-extractor/blob/main/pyproject.toml"
+              target="_blank" rel="noopener">pyproject.toml</a>.
+          </dd>
+        </div>
+        <div class="knowledge__group">
+          <dt class="knowledge__domain">Checked</dt>
+          <dd class="knowledge__items">Lint, formatting, types, tests</dd>
+          <dd class="knowledge__note">
+            <a href="https://github.com/jgonmor16/frame-extractor/blob/main/Makefile"
+              target="_blank" rel="noopener"><code>make check</code></a>
+            runs locally exactly what CI runs.
+          </dd>
+        </div>
+        <div class="knowledge__group">
+          <dt class="knowledge__domain">Documented</dt>
+          <dd class="knowledge__items">Design notes in the repository</dd>
+          <dd class="knowledge__note">
+            <a href="https://github.com/jgonmor16/frame-extractor/blob/main/docs/DESIGN.md"
+              target="_blank" rel="noopener">DESIGN.md</a> explains why
+            the ffmpeg invocation looks the way it does, for whoever
+            changes a flag next.
+          </dd>
+        </div>
+      </dl>
+    </section>
+
+    <section class="section" aria-labelledby="scope-title">
+      <p class="eyebrow">Scope</p>
+      <h2 class="section__title" id="scope-title">
+        Where it does not help
+      </h2>
+      <p class="detail__text">
+        Frames as arrays for machine learning or computer vision work
+        are better served by PyAV or TorchCodec, rather than writing
+        PNGs only to read them straight back. Anything past extraction
+        &mdash; trimming, concatenating, re-encoding &mdash; is
+        ffmpeg's job and stays there.
+      </p>
+      <p class="detail__text">
+        Two of the frame-selection modes can return far fewer frames
+        than expected, and that is correct rather than broken. Scene
+        detection is a heuristic on pixel differences, not a cut list;
+        in a test clip of four solid colours it found two of the three
+        changes. The command line says so when a run writes nothing.
+      </p>
+    </section>
+
+  </main>
+
+  <footer class="foot">
+    <div class="foot__inner">
+      <p class="foot__name">Javier González</p>
+      <p class="foot__role">
+        Project Manager and Systems Engineer &middot; Europe / Remote
+      </p>
+      <ul class="foot__links">
+        <li>
+          <a href="mailto:jgonmor16@gmail.com">
+            <span class="contact__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="16" height="16"
+                fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="2" y="4" width="20" height="16" rx="2"/>
+                <path d="m2 7 10 6 10-6"/>
+              </svg>
+            </span>
+            Email
+          </a>
+        </li>
+        <li>
+          <a href="https://github.com/jgonmor16"
+            target="_blank" rel="noopener">
+            <span class="contact__icon" aria-hidden="true">
+              <svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor">
+                <path d="M6.766 11.328c-2.063-.25-3.516-1.734-3.516-3.656 0-.781.281-1.625.75-2.188-.203-.515-.172-1.609.063-2.062.625-.078 1.468.25 1.968.703.594-.187 1.219-.281 1.985-.281.765 0 1.39.094 1.953.265.484-.437 1.344-.765 1.969-.687.218.422.25 1.515.046 2.047.5.593.766 1.39.766 2.203 0 1.922-1.453 3.375-3.547 3.64.531.344.89 1.094.89 1.954v1.625c0 .468.391.734.86.547C13.781 14.359 16 11.53 16 8.03 16 3.61 12.406 0 7.984 0 3.563 0 0 3.61 0 8.031a7.88 7.88 0 0 0 5.172 7.422c.422.156.828-.125.828-.547v-1.25c-.219.094-.5.156-.75.156-1.031 0-1.64-.562-2.078-1.609-.172-.422-.36-.672-.719-.719-.187-.015-.25-.093-.25-.187 0-.188.313-.328.625-.328.453 0 .844.281 1.25.86.313.452.64.655 1.031.655s.641-.14 1-.5c.266-.265.47-.5.657-.656"/>
+              </svg>
+            </span>
+            GitHub</a>
+        </li>
+        <li>
+          <a href="https://www.linkedin.com/in/jgonzalezmoreno/"
+            target="_blank" rel="noopener">
+            <span class="contact__icon">
+              <img src="/assets/img/InBug-White.png" alt="LinkedIn"
+                width="16" height="16">
+            </span>
+            LinkedIn</a>
+        </li>
+      </ul>
+    </div>
+  </footer>
+
+  <script src="/assets/js/motion.js" defer></script>
+</body>
+
+</html>

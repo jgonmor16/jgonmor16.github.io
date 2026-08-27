@@ -1,0 +1,134 @@
+/* Detail pages sit below a nav rather than a full-height hero,
+   so the head needs its own top spacing. */
+.detail__head {
+  padding-top: clamp(40px, 6vw, 64px);
+}
+
+.detail__title {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(30px, 5.5vw, 44px);
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  margin: 0 0 16px;
+}
+
+.detail__lead {
+  color: var(--text-secondary);
+  font-size: clamp(16px, 2vw, 18px);
+  max-width: 56ch;
+  margin: 0 0 24px;
+}
+
+.detail__tags {
+  margin: 0 0 20px;
+}
+
+.detail__links {
+  margin: 0;
+}
+
+.detail__text {
+  color: var(--text-secondary);
+  max-width: 62ch;
+  margin: 0 0 18px;
+}
+
+.detail__text:last-child {
+  margin-bottom: 0;
+}
+
+.detail__text code {
+  font-family: var(--font-mono);
+  font-size: 0.92em;
+  color: var(--text-primary);
+}
+
+.detail__facts {
+  margin-bottom: 0;
+}
+
+/* Comparison table */
+/* The table has a minimum width, so it scrolls on a phone
+   rather than crushing three columns into nothing. */
+.dtable-scroll {
+  overflow-x: auto;
+  margin: 0 0 24px;
+}
+
+.dtable-scroll:focus-visible {
+  outline: 2px solid var(--accent-2);
+  outline-offset: 3px;
+}
+
+.dtable {
+  width: 100%;
+  min-width: 520px;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+.dtable th,
+.dtable td {
+  padding: 9px 12px 9px 0;
+  text-align: left;
+  vertical-align: top;
+  border-bottom: 1px solid var(--line);
+}
+
+.dtable thead th {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--accent);
+  white-space: nowrap;
+}
+
+.dtable td {
+  color: var(--text-secondary);
+}
+
+.dtable code {
+  font-family: var(--font-mono);
+  font-size: 0.92em;
+  color: var(--text-primary);
+}
+
+.dtable__ok {
+  color: var(--signal);
+}
+
+/* Screenshots and diagrams */
+.detail__figure {
+  margin: 28px 0 0;
+}
+
+.detail__figure img {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
+.detail__caption {
+  margin: 10px 0 0;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text-faint);
+}
+
+.knowledge__items a,
+.knowledge__note a {
+  color: var(--text-secondary);
+  text-decoration: none;
+  border-bottom: 1px solid var(--line-strong);
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+.knowledge__items a:hover,
+.knowledge__note a:hover {
+  color: var(--text-primary);
+  border-bottom-color: var(--accent);
+}
