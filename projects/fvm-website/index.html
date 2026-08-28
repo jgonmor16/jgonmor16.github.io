@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>FVM group website — Javier González</title>
+  <meta name="description"
+    content="Rebuilding the landing page for FVM, an ESA-funded formal verification methodology, around the evidence its audience of verification engineers actually wanted.">
+
+  <meta property="og:title" content="FVM group website — Javier González">
+  <meta property="og:description"
+    content="Rebuilding the landing page for FVM, an ESA-funded formal verification methodology, around the evidence its audience of verification engineers actually wanted.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://jgonmor16.github.io/projects/fvm-website/">
+  <meta property="og:image" content="https://jgonmor16.github.io/assets/img/og-image.png">
+  <meta name="theme-color" content="#0A0E1A">
+
+  <link rel="icon" href="/assets/img/favicon.ico" sizes="32x32">
+  <link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
+
+  <link rel="stylesheet" href="/assets/css/fonts.css">
+  <link rel="stylesheet" href="/assets/css/tokens.css">
+  <link rel="stylesheet" href="/assets/css/base.css">
+  <link rel="stylesheet" href="/assets/css/nav.css">
+  <link rel="stylesheet" href="/assets/css/projects.css">
+  <link rel="stylesheet" href="/assets/css/knowledge.css">
+  <link rel="stylesheet" href="/assets/css/footer.css">
+  <link rel="stylesheet" href="/assets/css/detail.css">
+  <link rel="stylesheet" href="/assets/css/motion.css">
+</head>
+
+<body>
+
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <nav class="nav" aria-label="Main">
+    <div class="nav__inner">
+      <a class="nav__mark" href="/" aria-label="Home">
+        <img src="/assets/img/logo.svg" alt="" width="29" height="26">
+      </a>
+      <ul class="nav__list">
+        <li><a href="/#projects">&larr; All projects</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main id="main">
+
+    <header class="section detail__head">
+      <p class="eyebrow">Project <span class="detail__num">03</span>
+        &middot; Web</p>
+      <h1 class="detail__title">FVM group website</h1>
+      <p class="detail__lead">
+        A rewrite of the landing page for FVM, an ESA-funded formal
+        verification methodology from the Universidad de Sevilla. The
+        old page held everything a visitor needed and surfaced none of
+        it. Vanilla HTML, CSS and JavaScript, no framework and no
+        build step.
+      </p>
+
+      <ul class="project__tags detail__tags">
+        <li>HTML</li>
+        <li>CSS</li>
+        <li>JavaScript</li>
+        <li>Design tokens</li>
+        <li>A11y</li>
+      </ul>
+
+      <div class="project__links detail__links">
+        <a href="https://eda.pages.woden.us.es/fvmwebsite/" target="_blank" rel="noopener">New site</a>
+        <a href="https://fvm.us.es/" target="_blank" rel="noopener">Old site</a>
+      </div>
+    </header>
+
+    <section class="section" aria-labelledby="problem-title">
+      <p class="eyebrow">Problem</p>
+      <h2 class="section__title" id="problem-title">
+        Everything present, nothing surfaced
+      </h2>
+      <p class="detail__text">
+        The audience is VHDL verification engineers and researchers
+        &mdash; people who will not adopt a methodology because a page
+        says it is good. They want to see what a property looks like,
+        whether it has been used on anything real, and what it costs to
+        try.
+      </p>
+      <p class="detail__text">
+        All of that existed. It was spread across the documentation and
+        a landing page built as a flat run of headed paragraphs: what
+        is FVM, features, who is this for, team, funding. No hierarchy,
+        so nothing was more important than anything else. No sample of
+        the actual work. Nothing to act on beyond a link into the docs.
+      </p>
+
+      <figure class="detail__figure">
+        <img src="/assets/img/fvm-before.webp"
+          alt="The previous FVM landing page: a single column of
+            headings and paragraphs with no visual hierarchy."
+          width="1520" height="725" loading="lazy">
+        <figcaption class="detail__caption">
+          Before &mdash; complete, undifferentiated
+        </figcaption>
+      </figure>
+    </section>
+
+    <section class="section" aria-labelledby="approach-title">
+      <p class="eyebrow">Approach</p>
+      <h2 class="section__title" id="approach-title">
+        Promote the evidence, add nothing
+      </h2>
+      <p class="detail__text">
+        Almost no new content was written. The rewrite mostly moved
+        facts that already existed in the documentation up to where a
+        first-time visitor would meet them, and gave them a shape.
+      </p>
+      <p class="detail__text">
+        The hero now carries a real PSL property beside the pitch, with
+        the verdict underneath it &mdash; a proof result, the assertion
+        count, the runtime. A verification engineer can judge the
+        methodology from that panel alone, which is the only judgement
+        that matters to them.
+      </p>
+
+      <figure class="detail__figure">
+        <img src="/assets/img/fvm-hero.webp"
+          alt="The new FVM hero: version badge, wordmark, tagline,
+            two calls to action, and a panel showing a proven
+            property with its assertion count and runtime."
+          width="1349" height="643" loading="lazy">
+        <figcaption class="detail__caption">
+          After &mdash; the pitch and the proof, side by side
+        </figcaption>
+      </figure>
+
+      <p class="detail__text">
+        The results section does the same job with numbers that were
+        buried in the docs: every design in the example repository
+        verified, the assertion count on the most complex of them, the
+        part-time hours it took a junior engineer, and the bugs found
+        in designs that had already passed simulation. That last figure
+        is the argument for formal verification in one line, and it was
+        not on the site at all.
+      </p>
+
+      <figure class="detail__figure">
+        <img src="/assets/img/fvm-results.webp"
+          alt="The results section: three statistic cards showing
+            assertions proven, hours spent, and bugs found after
+            simulation had passed."
+          width="1520" height="654" loading="lazy">
+        <figcaption class="detail__caption">
+          Numbers lifted out of the documentation
+        </figcaption>
+      </figure>
+
+      <p class="detail__text">
+        Getting started was reduced to the one command that begins
+        everything, with a copy control beside it and the external
+        requirements stated plainly underneath rather than discovered
+        during an install.
+      </p>
+    </section>
+
+    <section class="section" aria-labelledby="build-title">
+      <p class="eyebrow">Build</p>
+      <h2 class="section__title" id="build-title">
+        Maintainable by researchers
+      </h2>
+      <p class="detail__text">
+        The people who will maintain this are verification researchers,
+        not front-end developers. That ruled out a framework, a build
+        step and a toolchain that rots between releases. It is plain
+        HTML, CSS and JavaScript, served as files.
+      </p>
+
+      <dl class="knowledge detail__facts">
+        <div class="knowledge__group">
+          <dt class="knowledge__domain">Theming</dt>
+          <dd class="knowledge__items">
+            Light and dark from one token set
+          </dd>
+          <dd class="knowledge__note">
+            Every colour is declared once with
+            <code>light-dark()</code>. The theme script is inline in
+            the head, ahead of the stylesheets, so the page never
+            flashes the wrong theme before settling.
+          </dd>
+        </div>
+        <div class="knowledge__group">
+          <dt class="knowledge__domain">Type</dt>
+          <dd class="knowledge__items">
+            IBM Plex Sans and Mono, self-hosted
+          </dd>
+          <dd class="knowledge__note">
+            Latin subsets under the SIL Open Font License, served from
+            the same origin, so the page makes no third-party
+            requests.
+          </dd>
+        </div>
+        <div class="knowledge__group">
+          <dt class="knowledge__domain">Motion</dt>
+          <dd class="knowledge__items">Reveal on scroll, fails safe</dd>
+          <dd class="knowledge__note">
+            The script adds the class that hides content only after
+            confirming motion is allowed, so if it never runs the page
+            is simply visible.
+          </dd>
+        </div>
+        <div class="knowledge__group">
+          <dt class="knowledge__domain">Version</dt>
+          <dd class="knowledge__items">Read live from PyPI</dd>
+          <dd class="knowledge__note">
+            The release number in the hero is fetched on load. If the
+            request fails it keeps whatever is in the markup, so the
+            page degrades to a stale truth rather than an empty space.
+          </dd>
+        </div>
+      </dl>
+    </section>
+
+    <section class="section" aria-labelledby="scope-title">
+      <p class="eyebrow">Scope</p>
+      <h2 class="section__title" id="scope-title">
+        What is mine and what is not
+      </h2>
+      <p class="detail__text">
+        The methodology, the tooling, the results and the paper are the
+        work of the FVM team at the Universidad de Sevilla, supported
+        by the European Space Agency. I designed and built the landing
+        page around them. The documentation site is separate and was
+        left alone.
+      </p>
+      <p class="detail__text">
+        The rewrite currently runs on the GitLab mirror. It replaces
+        the page at the official domain in September.
+      </p>
+    </section>
+
+  </main>
+
+  <footer class="foot">
+    <div class="foot__inner">
+      <p class="foot__name">Javier González</p>
+      <p class="foot__role">
+        Project Manager and Systems Engineer &middot; Europe / Remote
+      </p>
+      <ul class="foot__links">
+        <li>
+          <a href="mailto:jgonmor16@gmail.com">
+            <span class="contact__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="2" y="4" width="20" height="16" rx="2" />
+                <path d="m2 7 10 6 10-6" />
+              </svg>
+            </span>
+            Email
+          </a>
+        </li>
+        <li>
+          <a href="https://github.com/jgonmor16" target="_blank" rel="noopener">
+            <span class="contact__icon" aria-hidden="true">
+              <svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor">
+                <path
+                  d="M6.766 11.328c-2.063-.25-3.516-1.734-3.516-3.656 0-.781.281-1.625.75-2.188-.203-.515-.172-1.609.063-2.062.625-.078 1.468.25 1.968.703.594-.187 1.219-.281 1.985-.281.765 0 1.39.094 1.953.265.484-.437 1.344-.765 1.969-.687.218.422.25 1.515.046 2.047.5.593.766 1.39.766 2.203 0 1.922-1.453 3.375-3.547 3.64.531.344.89 1.094.89 1.954v1.625c0 .468.391.734.86.547C13.781 14.359 16 11.53 16 8.03 16 3.61 12.406 0 7.984 0 3.563 0 0 3.61 0 8.031a7.88 7.88 0 0 0 5.172 7.422c.422.156.828-.125.828-.547v-1.25c-.219.094-.5.156-.75.156-1.031 0-1.64-.562-2.078-1.609-.172-.422-.36-.672-.719-.719-.187-.015-.25-.093-.25-.187 0-.188.313-.328.625-.328.453 0 .844.281 1.25.86.313.452.64.655 1.031.655s.641-.14 1-.5c.266-.265.47-.5.657-.656" />
+              </svg>
+            </span>
+            GitHub</a>
+        </li>
+        <li>
+          <a href="https://www.linkedin.com/in/jgonzalezmoreno/" target="_blank" rel="noopener">
+            <span class="contact__icon">
+              <img src="/assets/img/InBug-White.png" alt="LinkedIn" width="16" height="16">
+            </span>
+            LinkedIn</a>
+        </li>
+      </ul>
+    </div>
+  </footer>
+
+  <script src="/assets/js/motion.js" defer></script>
+</body>
+
+</html>

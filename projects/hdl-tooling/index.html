@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>VHDL indent query for Neovim — Javier González</title>
+  <meta name="description"
+    content="Writing the indent query VHDL never had in Neovim, anchored on wrapper nodes so indentation cannot compound, with thirteen reference files testing it as a no-op.">
+
+  <meta property="og:title" content="VHDL indent query for Neovim — Javier González">
+  <meta property="og:description"
+    content="Writing the indent query VHDL never had in Neovim, anchored on wrapper nodes so indentation cannot compound, with thirteen reference files testing it as a no-op.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://jgonmor16.github.io/projects/hdl-tooling/">
+  <meta property="og:image" content="https://jgonmor16.github.io/assets/img/og-image.png">
+  <meta name="theme-color" content="#0A0E1A">
+
+  <link rel="icon" href="/assets/img/favicon.ico" sizes="32x32">
+  <link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
+
+  <link rel="stylesheet" href="/assets/css/fonts.css">
+  <link rel="stylesheet" href="/assets/css/tokens.css">
+  <link rel="stylesheet" href="/assets/css/base.css">
+  <link rel="stylesheet" href="/assets/css/nav.css">
+  <link rel="stylesheet" href="/assets/css/projects.css">
+  <link rel="stylesheet" href="/assets/css/knowledge.css">
+  <link rel="stylesheet" href="/assets/css/footer.css">
+  <link rel="stylesheet" href="/assets/css/detail.css">
+  <link rel="stylesheet" href="/assets/css/motion.css">
+</head>
+
+<body>
+
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <nav class="nav" aria-label="Main">
+    <div class="nav__inner">
+      <a class="nav__mark" href="/" aria-label="Home">
+        <img src="/assets/img/logo.svg" alt="" width="29" height="26">
+      </a>
+      <ul class="nav__list">
+        <li><a href="/#projects">&larr; All projects</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main id="main">
+
+    <header class="section detail__head">
+      <p class="eyebrow">Project <span class="detail__num">02</span>
+        &middot; VHDL</p>
+      <h1 class="detail__title">A VHDL indent query for Neovim</h1>
+      <p class="detail__lead">
+        The VHDL grammar had highlights, folds, injections and
+        textobjects, but no indent query &mdash; so Neovim fell back to
+        a Vimscript file that declares itself VHDL-93 and has not
+        substantively changed since 2017. This is the query that
+        replaced it, and the harness that proves it.
+      </p>
+
+      <ul class="project__tags detail__tags">
+        <li>VHDL</li>
+        <li>Tree-sitter</li>
+        <li>Neovim</li>
+        <li>Lua</li>
+        <li>Shell</li>
+      </ul>
+
+      <div class="project__links detail__links">
+        <a href="https://github.com/jpt13653903/tree-sitter-vhdl/pull/75" target="_blank" rel="noopener">Pull
+          request</a>
+        <a href="https://github.com/jpt13653903/tree-sitter-vhdl" target="_blank" rel="noopener">Grammar</a>
+      </div>
+    </header>
+
+    <section class="section" aria-labelledby="problem-title">
+      <p class="eyebrow">Problem</p>
+      <h2 class="section__title" id="problem-title">
+        The one query nobody had written
+      </h2>
+      <p class="detail__text">
+        A tree-sitter grammar ships queries telling the editor what to
+        do with the parse tree. VHDL's had four of the five. The
+        missing one was indentation, so every VHDL buffer in Neovim
+        quietly fell back to the bundled
+        <code>runtime/indent/vhdl.vim</code> &mdash; a script written
+        against the 1993 revision of the language and untouched in any
+        substantive way since 2017.
+      </p>
+      <p class="detail__text">
+        I write VHDL for a living. This is the kind of defect that
+        survives for years precisely because everyone works around it
+        rather than reporting it.
+      </p>
+    </section>
+
+    <section class="section" aria-labelledby="approach-title">
+      <p class="eyebrow">Approach</p>
+      <h2 class="section__title" id="approach-title">
+        Anchor on the wrapper, not the clause
+      </h2>
+      <p class="detail__text">
+        The obvious way to indent an <code>if/elsif/else</code> chain
+        is to capture each clause. It is also wrong. Every clause is an
+        ancestor of the lines below it and each starts on a different
+        row, so nvim-treesitter's
+        <code>is_processed_by_row</code> does not deduplicate them and
+        the indent compounds one level per clause:
+      </p>
+
+      <!-- The preformatted lines below exceed 80 columns on
+           purpose: whitespace is significant there, so
+           wrapping the source would add real breaks. -->
+      <figure class="term">
+        <figcaption class="term__bar">
+          <span class="term__label">anchoring on each clause</span>
+          <span class="term__note">what not to do</span>
+        </figcaption>
+        <pre class="term__code"><code><span class="tok-k">if</span> reset = <span class="tok-str">'1'</span> <span class="tok-k">then</span>
+  count &lt;= <span class="tok-n">0</span>;
+<span class="tok-k">elsif</span> <span class="tok-fn">rising_edge</span>(clk) <span class="tok-k">then</span>
+    count &lt;= count + <span class="tok-n">1</span>; <span class="tok-e">-- one level too deep</span>
+<span class="tok-k">elsif</span> enable = <span class="tok-str">'1'</span> <span class="tok-k">then</span>
+      count &lt;= count; <span class="tok-e">-- and again</span>
+<span class="tok-k">end if</span>;</code></pre>
+        <figcaption class="term__verdict">
+          <span class="term__dot" aria-hidden="true"></span>
+          COMPOUNDS
+          <span class="term__meta">one level per clause</span>
+        </figcaption>
+      </figure>
+
+      <p class="detail__text">
+        So the query anchors on the outermost wrapper of each construct
+        instead. <code>if_statement_block</code> appears exactly once
+        per chain however many <code>elsif</code> clauses sit inside
+        it, so the depth cannot compound. It also makes the query
+        robust to the grammar changing underneath it: if the maintainer
+        flattens <code>if/elsif/else</code> later, the results are
+        identical under either tree shape and nothing here needs
+        touching.
+      </p>
+      <p class="detail__text">
+        The head and body nodes are deliberately left uncaptured. One
+        wrapper covers both the declarative and statement regions, and
+        <code>"begin"</code> branches back to the construct's own
+        level. Two of them &mdash; <code>process_head</code> and
+        <code>generate_body</code> &mdash; have an optional-keyword
+        variant whose node starts on a different line in each form, so
+        neither can be anchored directly at all.
+      </p>
+    </section>
+
+    <section class="section" aria-labelledby="tests-title">
+      <p class="eyebrow">Tests</p>
+      <h2 class="section__title" id="tests-title">
+        Correct output is an empty diff
+      </h2>
+      <p class="detail__text">
+        Thirteen reference files, one per construct family, each
+        already indented the way the query should indent it.
+        Re-indenting a correct file must change nothing, so the check
+        is a diff against the input itself. There are no
+        expected-output files, which means there is nothing to drift
+        out of step with the query.
+      </p>
+
+      <figure class="term">
+        <figcaption class="term__bar">
+          <span class="term__label">test/indent/run.sh</span>
+        </figcaption>
+        <pre class="term__code"><code><span class="tok-p">$</span> NVIM_TREESITTER=/path/to/nvim-treesitter ./test/indent/run.sh
+<span class="tok-c"># builds the parser from the working tree, then stages</span>
+<span class="tok-c"># queries/Neovim as queries/vhdl on the runtimepath</span>
+<span class="tok-str">13 passed</span></code></pre>
+        <figcaption class="term__verdict">
+          <span class="term__dot" aria-hidden="true"></span>
+          EXIT 0
+          <span class="term__meta">no diff against any reference</span>
+        </figcaption>
+      </figure>
+
+      <p class="detail__text">
+        The runner also refuses to report a result it cannot trust. It
+        asserts the tree-sitter <code>indentexpr</code> is actually
+        active before measuring anything, and exits <code>3</code> if
+        it is not. Without that guard a misconfigured run falls back to
+        the old Vimscript indent and emits a full set of
+        plausible-looking diffs &mdash; the worst kind of failure,
+        because it looks exactly like real output.
+      </p>
+      <p class="detail__text">
+        None of this can run in the grammar's own CI. The tree-sitter
+        indent implementation lives in the nvim-treesitter plugin
+        rather than the tree-sitter CLI, so the plugin has to be on
+        disk for any of it to execute.
+      </p>
+    </section>
+
+    <section class="section" aria-labelledby="scope-title">
+      <p class="eyebrow">Scope</p>
+      <h2 class="section__title" id="scope-title">
+        Listed, not quietly omitted
+      </h2>
+      <p class="detail__text">
+        The pull request names what the query does not handle:
+        multi-line aggregates and the continuation lines of concurrent
+        assignments; the hanging-paren style, since this imposes the
+        block style on interface lists; and
+        <code>configuration</code> and <code>context</code>
+        declarations, protected types, and
+        <code>with ... select</code>.
+      </p>
+      <p class="detail__text">
+        Writing that list down is the point. A reviewer can weigh what
+        arrived against what did not, rather than finding the gaps
+        later and wondering whether they were decisions or oversights.
+      </p>
+    </section>
+
+    <section class="section" aria-labelledby="also-title">
+      <p class="eyebrow">Also merged</p>
+      <h2 class="section__title" id="also-title">
+        Two root-resolution fixes
+      </h2>
+      <p class="detail__text">
+        Both in
+        <a href="https://github.com/neovim/nvim-lspconfig" target="_blank" rel="noopener">nvim-lspconfig</a>, where most
+        Neovim users get their language-server configuration.
+      </p>
+
+      <dl class="knowledge detail__facts">
+        <div class="knowledge__group">
+          <dt class="knowledge__domain">vhdl_ls</dt>
+          <dd class="knowledge__items">Root marker removed</dd>
+          <dd class="knowledge__note">
+            <a href="https://github.com/neovim/nvim-lspconfig/pull/4506" target="_blank" rel="noopener">#4506</a>
+            &mdash;
+            <code>.vhdl_ls.toml</code> was a listed marker, but the
+            server only ever reads it from <code>$HOME</code>, so
+            <code>root_dir</code> resolved to the home directory for
+            every VHDL file beneath it. Proven by reading the server's
+            own config loader.
+          </dd>
+        </div>
+        <div class="knowledge__group">
+          <dt class="knowledge__domain">verible</dt>
+          <dd class="knowledge__items">Root marker added</dd>
+          <dd class="knowledge__note">
+            <a href="https://github.com/neovim/nvim-lspconfig/pull/4498" target="_blank" rel="noopener">#4498</a>
+            &mdash; upstream
+            documents <code>verible.filelist</code> as the project
+            root, but the config carried only <code>.git</code>, so a
+            project whose filelist sat apart from its repository root
+            resolved to an ancestor.
+          </dd>
+        </div>
+      </dl>
+
+      <p class="detail__text">
+        The second was scoped deliberately. Correcting the root did not
+        restore cross-file go-to-definition, which is what I had been
+        chasing when I found it &mdash; that turned out to be
+        <a href="https://github.com/chipsalliance/verible/issues/2290" target="_blank" rel="noopener">a separate
+          issue</a> in the
+        language server itself. Bundling an unproven fix with a proven
+        one would only have made the proven one harder to review.
+      </p>
+    </section>
+
+  </main>
+
+  <footer class="foot">
+    <div class="foot__inner">
+      <p class="foot__name">Javier González</p>
+      <p class="foot__role">
+        Project Manager and Systems Engineer &middot; Europe / Remote
+      </p>
+      <ul class="foot__links">
+        <li>
+          <a href="mailto:jgonmor16@gmail.com">
+            <span class="contact__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="2" y="4" width="20" height="16" rx="2" />
+                <path d="m2 7 10 6 10-6" />
+              </svg>
+            </span>
+            Email
+          </a>
+        </li>
+        <li>
+          <a href="https://github.com/jgonmor16" target="_blank" rel="noopener">
+            <span class="contact__icon" aria-hidden="true">
+              <svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor">
+                <path
+                  d="M6.766 11.328c-2.063-.25-3.516-1.734-3.516-3.656 0-.781.281-1.625.75-2.188-.203-.515-.172-1.609.063-2.062.625-.078 1.468.25 1.968.703.594-.187 1.219-.281 1.985-.281.765 0 1.39.094 1.953.265.484-.437 1.344-.765 1.969-.687.218.422.25 1.515.046 2.047.5.593.766 1.39.766 2.203 0 1.922-1.453 3.375-3.547 3.64.531.344.89 1.094.89 1.954v1.625c0 .468.391.734.86.547C13.781 14.359 16 11.53 16 8.03 16 3.61 12.406 0 7.984 0 3.563 0 0 3.61 0 8.031a7.88 7.88 0 0 0 5.172 7.422c.422.156.828-.125.828-.547v-1.25c-.219.094-.5.156-.75.156-1.031 0-1.64-.562-2.078-1.609-.172-.422-.36-.672-.719-.719-.187-.015-.25-.093-.25-.187 0-.188.313-.328.625-.328.453 0 .844.281 1.25.86.313.452.64.655 1.031.655s.641-.14 1-.5c.266-.265.47-.5.657-.656" />
+              </svg>
+            </span>
+            GitHub</a>
+        </li>
+        <li>
+          <a href="https://www.linkedin.com/in/jgonzalezmoreno/" target="_blank" rel="noopener">
+            <span class="contact__icon">
+              <img src="/assets/img/InBug-White.png" alt="LinkedIn" width="16" height="16">
+            </span>
+            LinkedIn</a>
+        </li>
+      </ul>
+    </div>
+  </footer>
+
+  <script src="/assets/js/motion.js" defer></script>
+</body>
+
+</html>
