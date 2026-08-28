@@ -26,9 +26,13 @@ jobs:
       - uses: actions/checkout@v4
       - uses: lycheeverse/lychee-action@v2
         with:
+          # LinkedIn answers 999 to any request without a browser
+          # session. The link is fine; it just cannot be checked.
           args: >-
             --no-progress
             --max-retries 3
+            --root-dir ${{ github.workspace }}
+            --exclude '^https://www\.linkedin\.com/'
             --exclude-path assets
             './**/*.html'
           fail: true
