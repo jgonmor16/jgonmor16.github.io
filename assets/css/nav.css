@@ -36,7 +36,7 @@ html {
 
 .nav__list {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   align-items: center;
   gap: 2px;
   margin: 0;
@@ -82,7 +82,8 @@ html {
   }
 
   .nav__list a {
-    padding: 6px 7px;
-    font-size: 12px;
+    padding: 6px 5px;
+    font-size: 11px;
+    letter-spacing: 0;
   }
 }

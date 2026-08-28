@@ -115,10 +115,10 @@
            purpose: whitespace is significant there, so
            wrapping the source would add real breaks. -->
       <figure class="term">
-        <figcaption class="term__bar">
+        <div class="term__bar">
           <span class="term__label">anchoring on each clause</span>
           <span class="term__note">what not to do</span>
-        </figcaption>
+        </div>
         <pre class="term__code"><code><span class="tok-k">if</span> reset = <span class="tok-str">'1'</span> <span class="tok-k">then</span>
   count &lt;= <span class="tok-n">0</span>;
 <span class="tok-k">elsif</span> <span class="tok-fn">rising_edge</span>(clk) <span class="tok-k">then</span>
@@ -169,9 +169,9 @@
       </p>
 
       <figure class="term">
-        <figcaption class="term__bar">
+        <div class="term__bar">
           <span class="term__label">test/indent/run.sh</span>
-        </figcaption>
+        </div>
         <pre class="term__code"><code><span class="tok-p">$</span> NVIM_TREESITTER=/path/to/nvim-treesitter ./test/indent/run.sh
 <span class="tok-c"># builds the parser from the working tree, then stages</span>
 <span class="tok-c"># queries/Neovim as queries/vhdl on the runtimepath</span>

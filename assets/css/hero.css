@@ -1,9 +1,9 @@
 /* ---------- Hero ---------- */
 .hero {
-  min-height: 100svh;
+  min-height: calc(100svh - var(--nav-h));
   display: flex;
   align-items: center;
-  padding: 96px 24px;
+  padding: clamp(40px, 10vw, 96px) 24px var(--section-gap);
   border-bottom: 1px solid var(--line);
 }
 
@@ -71,12 +71,26 @@
   position: absolute;
   left: 0;
   right: 0;
-  bottom: -0.16em;
+  bottom: -0.22em;
   height: 4px;
   border-radius: 2px;
   background: linear-gradient(90deg, var(--accent), var(--accent-2));
   transform-origin: left center;
   animation: ignite 1s ease-out;
+}
+
+/* On narrow screens the heading wraps, so the bar would
+   strike through the second line. Hide it there and
+   underline the whole heading instead. */
+@media (max-width: 620px) {
+  .hero__mark::after {
+    display: none;
+  }
+
+  .hero .eyebrow::after {
+    display: block;
+    max-width: 180px;
+  }
 }
 
 /* ---------- Buttons ---------- */

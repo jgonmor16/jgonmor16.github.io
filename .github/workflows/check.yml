@@ -1,0 +1,36 @@
+name: Check
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  html:
+    name: Validate HTML
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: Cyb3r-Jak3/html5validator-action@v7.2.0
+        with:
+          root: .
+          blacklist: assets
+          # The eyebrow bar is a pseudo-element, so the empty
+          # heading warning it triggers is expected.
+          log_level: INFO
+
+  links:
+    name: Check links
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: lycheeverse/lychee-action@v2
+        with:
+          args: >-
+            --no-progress
+            --max-retries 3
+            --exclude-path assets
+            './**/*.html'
+          fail: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

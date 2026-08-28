@@ -153,9 +153,9 @@
            purpose: whitespace is significant there, so wrapping
            the source would add real breaks to the output. -->
       <figure class="term">
-        <figcaption class="term__bar">
+        <div class="term__bar">
           <span class="term__label">the first row, run</span>
-        </figcaption>
+        </div>
         <pre class="term__code"><code><span class="tok-c"># ffmpeg: start past the end of a 2-second clip</span>
 <span class="tok-p">$</span> ffmpeg <span class="tok-k">-ss</span> <span class="tok-n">99</span> <span class="tok-k">-i</span> in.mp4 <span class="tok-k">-vsync</span> <span class="tok-n">0</span> frames/f_%06d.png
 <span class="tok-p">$</span> <span class="tok-k">echo</span> $?
