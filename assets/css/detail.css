@@ -107,11 +107,12 @@
 
 /* Screenshots and diagrams */
 .detail__figure {
-  margin: 28px 0 0;
+  margin: 28px 0;
 }
 
 .detail__figure img {
   width: 100%;
+  height: auto;
   border: 1px solid var(--line);
   border-radius: var(--radius);
   background: var(--surface);

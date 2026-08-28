@@ -47,7 +47,7 @@
 
 .project__desc {
   color: var(--text-secondary);
-  font-size: 15px;
+  font-size: 14px;
   margin: 0 0 20px;
   flex-grow: 1;
 }
