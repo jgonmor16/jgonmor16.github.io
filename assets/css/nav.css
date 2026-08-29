@@ -77,8 +77,13 @@ html {
 }
 
 @media (max-width: 460px) {
-  .nav__mark {
-    display: none;
+  .nav__mark img {
+    width: 23px;
+    height: 21px;
+  }
+
+  .nav__inner {
+    gap: 12px;
   }
 
   .nav__list a {
