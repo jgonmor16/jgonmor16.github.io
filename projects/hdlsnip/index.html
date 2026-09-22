@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>hdlsnip.nvim — Javier González</title>
+  <meta name="description" content="A Neovim plugin that generates parameterised VHDL from Lua templates, reads existing entities, and compiles every fixture in CI.">
+
+  <meta property="og:title" content="hdlsnip.nvim — Javier González">
+  <meta property="og:description" content="A Neovim plugin that generates parameterised VHDL from Lua templates, reads existing entities, and compiles every fixture in CI.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://jgonmor16.github.io/projects/hdlsnip/">
+  <meta property="og:image" content="https://jgonmor16.github.io/assets/img/og-image.png">
+  <meta name="theme-color" content="#0A0E1A">
+
+  <link rel="icon" href="/assets/img/favicon.ico" sizes="32x32">
+  <link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
+
+  <link rel="stylesheet" href="/assets/css/fonts.css">
+  <link rel="stylesheet" href="/assets/css/tokens.css">
+  <link rel="stylesheet" href="/assets/css/base.css">
+  <link rel="stylesheet" href="/assets/css/nav.css">
+  <link rel="stylesheet" href="/assets/css/projects.css">
+  <link rel="stylesheet" href="/assets/css/knowledge.css">
+  <link rel="stylesheet" href="/assets/css/footer.css">
+  <link rel="stylesheet" href="/assets/css/detail.css">
+  <link rel="stylesheet" href="/assets/css/motion.css">
+</head>
+
+<body>
+
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <nav class="nav" aria-label="Main">
+    <div class="nav__inner">
+      <a class="nav__mark" href="/" aria-label="Home">
+        <img src="/assets/img/logo.svg" alt="" width="29" height="26">
+      </a>
+      <ul class="nav__list">
+        <li><a href="/#projects">&larr; All projects</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main id="main">
+
+    <header class="section detail__head">
+      <p class="eyebrow">Project <span class="detail__num">01</span>
+        &middot; VHDL</p>
+      <h1 class="detail__title">
+        VHDL templates that follow<br class="title-break">
+        your house style
+      </h1>
+      <p class="detail__lead">
+        A <span class="key">snippet engine fills blanks</span>. It
+        cannot decide whether a reset exists, or whether a FIFO
+        crosses clock domains. Each template here is a
+        <span class="key">small Lua program that renders VHDL</span>,
+        so a handful of answers change the structure of the code, not
+        just its names.
+      </p>
+
+      <ul class="project__tags detail__tags">
+        <li>VHDL</li>
+        <li>Lua</li>
+        <li>Neovim</li>
+        <li>GHDL</li>
+      </ul>
+
+      <div class="project__links detail__links">
+        <a href="https://github.com/jgonmor16/hdlsnip.nvim"
+          target="_blank" rel="noopener">Source Code</a>
+        <a href="https://github.com/jgonmor16/hdlsnip.nvim/releases/tag/v1.0.0"
+          target="_blank" rel="noopener">v1.0.0</a>
+      </div>
+
+      <figure class="demo">
+        <video src="media/hdlsnip-axil.mp4"
+          poster="media/hdlsnip-axil.jpg"
+          width="1100" height="900"
+          autoplay muted loop playsinline preload="metadata"
+          aria-label="An AXI4-Lite slave generated from a template after
+            answering two questions"></video>
+        <figcaption class="demo__caption">
+          <span class="demo__verdict">FOUR KEYSTROKES</span>
+          <span class="demo__meta">two answers, one AXI4-Lite slave</span>
+        </figcaption>
+      </figure>
+    </header>
+
+    <section class="section" aria-labelledby="problem-title">
+      <p class="eyebrow">Problem</p>
+      <h2 class="section__title" id="problem-title">
+        A tabstop cannot decide<br class="title-break">
+        whether a reset exists
+      </h2>
+      <p class="detail__text">
+        Every team writes the same handful of blocks its own way. A
+        snippet stores one answer and leaves the rest to editing
+        afterwards. The question is
+        <span class="key">structural</span>: an asynchronous reset is
+        a <span class="key">different sensitivity list and a different
+        <code>if</code></span>, not a different word.
+      </p>
+
+      <!-- The preformatted lines below exceed 80 columns on
+           purpose: whitespace is significant there, so
+           wrapping the source would add real breaks. -->
+      <figure class="term">
+        <div class="term__bar">
+          <span class="term__label">process, rendered twice</span>
+          <span class="term__note">same template, same label</span>
+        </div>
+        <pre class="term__code"><code><span class="tok-c">-- reset = { style = <span class="hl-cfg">"async"</span> }</span>
+p_main : process (clk, <span class="hl">rst_n</span>) is
+begin
+<span class="hl-body">  if <span class="hl">rst_n = '0'</span> then
+    -- reset state
+  elsif <span class="hl">rising_edge(clk)</span> then
+    -- clocked logic
+  end if;</span>
+end process p_main;
+
+<span class="tok-c">-- reset = { style = <span class="hl-cfg">"sync"</span> }</span>
+p_main : process (clk) is
+begin
+<span class="hl-body">  if <span class="hl">rising_edge(clk)</span> then
+    if <span class="hl">rst_n = '0'</span> then
+      -- reset state
+    else
+      -- clocked logic
+    end if;
+  end if;</span>
+end process p_main;</code></pre>
+        <figcaption class="term__verdict">
+          <span class="term__dot" aria-hidden="true"></span>
+          SAME TEMPLATE
+          <span class="term__meta">one line of configuration apart</span>
+        </figcaption>
+      </figure>
+    </section>
+
+    <section class="section" aria-labelledby="approach-title">
+      <p class="eyebrow">Approach</p>
+      <h2 class="section__title" id="approach-title">
+        Templates are Lua<br class="title-break">
+        that renders VHDL
+      </h2>
+      <p class="detail__text">
+        A template declares its parameters and returns the lines to
+        insert. Because it is
+        <span class="key">a function rather than a string</span>, a
+        parameter can add a synchroniser stage, drop a generic, or
+        split a process in two.
+        <span class="key">Twenty-one ship with the plugin</span>:
+        skeletons, RTL blocks, clock-domain crossings, FIFOs and a
+        dual-port RAM, five bus slaves, three testbench styles.
+      </p>
+      <p class="detail__text">
+        Completion comes from an
+        <span class="key">in-process LSP server</span>, so they appear
+        in the normal menu without an external binary. An inserted
+        block <span class="key">stays live</span>: change a parameter
+        and it re-renders where it sits.
+      </p>
+
+      <figure class="demo">
+        <video src="media/hdlsnip-live.mp4"
+          poster="media/hdlsnip-live.jpg"
+          width="1100" height="760"
+          autoplay muted loop playsinline preload="metadata"
+          aria-label="An inserted block re-rendering in place as its
+            parameters are changed"></video>
+        <figcaption class="demo__caption">
+          <span class="demo__verdict">RE-RENDERS</span>
+          <span class="demo__meta">as the parameters change, no snippet
+            engine</span>
+        </figcaption>
+      </figure>
+    </section>
+
+    <section class="section" aria-labelledby="correctness-title">
+      <p class="eyebrow">Correctness</p>
+      <h2 class="section__title" id="correctness-title">
+        Generated code that does not analyse<br class="title-break">
+        is worse than none
+      </h2>
+      <p class="detail__text">
+        So none of it is taken on trust. Every template is rendered
+        into fixtures, and every fixture is
+        <span class="key">compiled and style-checked</span> before it
+        can be merged.
+      </p>
+
+      <ul class="facts">
+        <li class="fact">
+          <p class="fact__label">651</p>
+          <h3 class="fact__name">Golden fixtures</h3>
+          <p class="fact__desc">
+            Every template across seven configuration variants,
+            VHDL-93 among them. A change to generated VHDL shows up as
+            a reviewable diff rather than hiding inside a Lua change.
+          </p>
+        </li>
+        <li class="fact">
+          <p class="fact__label">GHDL</p>
+          <h3 class="fact__name">Every fixture analysed</h3>
+          <p class="fact__desc">
+            An open-source VHDL compiler, run over all of them in CI.
+            If the generator emits something that will not compile,
+            the build fails rather than the user finding out.
+          </p>
+        </li>
+        <li class="fact">
+          <p class="fact__label">VSG</p>
+          <h3 class="fact__name">861 rules enabled</h3>
+          <p class="fact__desc">
+            A VHDL style checker. The 28 rules that are off are house
+            style, each with the reason recorded beside it.
+          </p>
+        </li>
+        <li class="fact">
+          <p class="fact__label">Simulated</p>
+          <h3 class="fact__name">CDC, FIFOs, bus slaves</h3>
+          <p class="fact__desc">
+            Analysis cannot see a clock-domain bug. Simulation caught
+            the asynchronous FIFO reading the unsynchronised end of
+            its own pointer synchronisers.
+          </p>
+        </li>
+      </ul>
+    </section>
+
+    <section class="section" aria-labelledby="beyond-title">
+      <p class="eyebrow">Beyond templates</p>
+      <h2 class="section__title" id="beyond-title">
+        Reading what is already written
+      </h2>
+      <p class="detail__text">
+        Most of an FPGA day is spent wiring up entities that already
+        exist. The plugin can
+        <span class="key">instantiate entities</span> and
+        <span class="key">create testbenches</span> from what is in
+        the project: it parses an entity and writes the instance, its
+        component declaration and the signals to connect it, named
+        throughout.
+      </p>
+      <p class="detail__text">
+        Clocks and resets are found
+        <span class="key">by the shape of the declaration</span>
+        rather than by name, so two clocks and an active-low reset
+        come out driven correctly even when nothing is called
+        <code>clk</code>.
+      </p>
+
+      <figure class="demo">
+        <video src="media/hdlsnip-testbench.mp4"
+          poster="media/hdlsnip-testbench.jpg"
+          width="1100" height="900"
+          autoplay muted loop playsinline preload="metadata"
+          aria-label="A testbench generated from an entity with two
+            clocks, both driven correctly"></video>
+        <figcaption class="demo__caption">
+          <span class="demo__verdict">BOTH CLOCKS DRIVEN</span>
+          <span class="demo__meta">found by shape, neither called
+            clk</span>
+        </figcaption>
+      </figure>
+    </section>
+
+    <section class="section" aria-labelledby="scope-title">
+      <p class="eyebrow">Scope</p>
+      <h2 class="section__title" id="scope-title">
+        What it does not do
+      </h2>
+      <p class="detail__text">
+        <span class="key">No SystemVerilog</span>, and no synthesis or
+        simulation from inside the editor &mdash; those belong to
+        tools that already do them well. MIT-licensed, and the VHDL it
+        generates is explicitly
+        <span class="key">public domain</span>: code out of a
+        generator should not carry the generator's licence.
+      </p>
+    </section>
+
+  </main>
+
+  <footer class="foot">
+    <div class="foot__inner">
+      <p class="foot__name">Javier González</p>
+      <p class="foot__role">
+        Project Manager and Systems Engineer &middot; Europe / Remote
+      </p>
+      <ul class="foot__links">
+        <li>
+          <a href="mailto:jgonmor16@gmail.com">
+            <span class="contact__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="16" height="16"
+                fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="2" y="4" width="20" height="16" rx="2" />
+                <path d="m2 7 10 6 10-6" />
+              </svg>
+            </span>
+            Email
+          </a>
+        </li>
+        <li>
+          <a href="https://github.com/jgonmor16"
+            target="_blank" rel="noopener">
+            <span class="contact__icon" aria-hidden="true">
+              <svg viewBox="0 0 16 16" width="16" height="16"
+                fill="currentColor">
+                <path d="M6.766 11.328c-2.063-.25-3.516-1.734-3.516-3.656 0-.781.281-1.625.75-2.188-.203-.515-.172-1.609.063-2.062.625-.078 1.468.25 1.968.703.594-.187 1.219-.281 1.985-.281.765 0 1.39.094 1.953.265.484-.437 1.344-.765 1.969-.687.218.422.25 1.515.046 2.047.5.593.766 1.39.766 2.203 0 1.922-1.453 3.375-3.547 3.64.531.344.89 1.094.89 1.954v1.625c0 .468.391.734.86.547C13.781 14.359 16 11.53 16 8.03 16 3.61 12.406 0 7.984 0 3.563 0 0 3.61 0 8.031a7.88 7.88 0 0 0 5.172 7.422c.422.156.828-.125.828-.547v-1.25c-.219.094-.5.156-.75.156-1.031 0-1.64-.562-2.078-1.609-.172-.422-.36-.672-.719-.719-.187-.015-.25-.093-.25-.187 0-.188.313-.328.625-.328.453 0 .844.281 1.25.86.313.452.64.655 1.031.655s.641-.14 1-.5c.266-.265.47-.5.657-.656" />
+              </svg>
+            </span>
+            GitHub</a>
+        </li>
+        <li>
+          <a href="https://www.linkedin.com/in/jgonzalezmoreno/"
+            target="_blank" rel="noopener">
+            <span class="contact__icon">
+              <img src="/assets/img/InBug-White.png" alt="LinkedIn"
+                width="16" height="16">
+            </span>
+            LinkedIn</a>
+        </li>
+      </ul>
+    </div>
+  </footer>
+
+  <script src="/assets/js/motion.js" defer></script>
+</body>
+
+</html>

@@ -240,3 +240,113 @@
 .tok-fn {
   color: var(--tok-fn);
 }
+
+/* Code blocks carry no syntax palette. The frame stays neutral, the
+   structure being compared is lifted out of it, only what differs
+   takes the accent, and the variant label sits apart from both. */
+.term__code .hl-body {
+  color: var(--text-primary);
+}
+
+.term__code .hl {
+  color: var(--accent-2);
+  font-weight: 500;
+}
+
+/* Literal rather than a token, so it survives --info being pruned. */
+.term__code .hl-cfg {
+  color: #8B7BFF;
+  font-weight: 500;
+}
+
+/* Key phrases lift out of the body colour without taking the accent,
+   which stays reserved for links and markers. */
+.detail__lead .key,
+.detail__text .key {
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+/* Long headings break where the sense breaks, but only when there is
+   room for the break to help. */
+@media (max-width: 560px) {
+  .title-break {
+    display: none;
+  }
+}
+
+/* Fact cards: the project-card treatment without the hover lift,
+   since these do not go anywhere. */
+.facts {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.fact {
+  display: flex;
+  flex-direction: column;
+  padding: 24px 22px 22px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
+.fact__label {
+  font-family: var(--font-mono);
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--accent);
+  margin: 0 0 12px;
+}
+
+.fact__name {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 17px;
+  margin: 0 0 10px;
+}
+
+.fact__desc {
+  color: var(--text-secondary);
+  font-size: 14px;
+  margin: 0;
+}
+
+/* Demo videos. Framed like the code panels, so a recording and a
+   listing read as the same kind of evidence. */
+.demo {
+  margin: 28px 0;
+}
+
+.demo video {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: #05080F;
+}
+
+.demo__caption {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 12px;
+  margin-top: 10px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+}
+
+.demo__verdict {
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  color: var(--accent);
+}
+
+.demo__meta {
+  color: var(--text-secondary);
+}

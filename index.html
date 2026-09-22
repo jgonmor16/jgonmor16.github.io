@@ -106,9 +106,39 @@
 
       <ul class="projects">
 
-        <!-- Frame Extractor -->
+        <!-- hdlsnip.nvim -->
         <li class="project">
           <p class="project__index">01</p>
+          <span class="project__go" aria-hidden="true">&#8594;</span>
+          <h3 class="project__name">
+            <a href="projects/hdlsnip/">hdlsnip.nvim</a>
+          </h3>
+          <p class="project__desc">
+            VHDL templates rendered from Lua rather than pasted. A parameter
+            can add a reset, change a handshake or restructure a process,
+            because the template is code that generates code. Twenty-one
+            templates, from a counter to an AXI4-Lite slave. It also reads the
+            entities already in the project and writes their instantiations
+            and testbenches. Every fixture is compiled and style-checked in
+            CI.
+          </p>
+          <ul class="project__tags">
+            <li>VHDL</li>
+            <li>Lua</li>
+            <li>Neovim</li>
+            <li>GHDL</li>
+          </ul>
+          <div class="project__links">
+            <a href="https://github.com/jgonmor16/hdlsnip.nvim"
+              target="_blank" rel="noopener">Source Code</a>
+            <a href="https://github.com/jgonmor16/hdlsnip.nvim/releases/tag/v1.0.0"
+              target="_blank" rel="noopener">v1.0.0</a>
+          </div>
+        </li>
+
+        <!-- Frame Extractor -->
+        <li class="project">
+          <p class="project__index">02</p>
           <span class="project__go" aria-hidden="true">&#8594;</span>
           <h3 class="project__name">
             <a href="projects/frame-extractor/">Frame Extractor</a>
@@ -135,7 +165,7 @@
 
         <!-- Open Source Contributions -->
         <li class="project">
-          <p class="project__index">02</p>
+          <p class="project__index">03</p>
           <span class="project__go" aria-hidden="true">&#8594;</span>
           <h3 class="project__name">
             <a href="projects/hdl-tooling/">HDL tooling for Neovim</a>
@@ -166,7 +196,7 @@
 
         <!-- FVM Website -->
         <li class="project">
-          <p class="project__index">03</p>
+          <p class="project__index">04</p>
           <span class="project__go" aria-hidden="true">&#8594;</span>
           <h3 class="project__name">
             <a href="projects/fvm-website/">FVM Landing Website</a>
@@ -238,7 +268,8 @@
             C, C++, Python, Lua, HTML, CSS, JavaScript, Bash
           </dd>
           <dd class="knowledge__note">
-            A CLI library on PyPI, Neovim tooling, web design.
+            A VHDL code generator, a CLI library on PyPI, Neovim tooling, web
+            design.
           </dd>
         </div>
 
