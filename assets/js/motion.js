@@ -1,5 +1,17 @@
 (function() {
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+  /* Demo videos autoplay from the markup, so they have to be stopped
+     before the early return below, not after it. */
+  if (reduce.matches) {
+    for (const v of document.querySelectorAll('.demo video')) {
+      v.autoplay = false;
+      v.loop = false;
+      v.controls = true;
+      v.pause();
+    }
+  }
+
   if (reduce.matches) return;
 
   const blocks = document.querySelectorAll('.section, .hero__inner');
